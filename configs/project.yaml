@@ -2,6 +2,11 @@ project:
   name: brutus-voice-twin
   seed: 42
 
+runtime:
+  default_tts_provider: gemini
+  require_digital_twin_output: true
+  fail_closed_on_unconverted_provider_audio: true
+
 audio:
   master_sample_rate: 24000
   channels: 1
