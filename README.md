@@ -1,42 +1,64 @@
 # BRUTUS Voice Digital Twin
 
-Standalone high-fidelity voice cloning and speaker-behaviour modeling service designed to integrate with BRUTUS through a streaming TTS provider.
+Standalone HDVR voice-digital-twin engine for BRUTUS.
+
+## Non-negotiable runtime invariant
+
+Every externally emitted waveform must be Digital Twin output.
+
+The TTS model is a provider, not the owner of speaker identity:
+
+    text
+      -> HDVR / VoiceDNA plan
+      -> selected TTS provider
+      -> DigitalTwinFinalizer
+      -> device renderer
+      -> 24 kHz PCM16
+      -> BRUTUS
+
+Gemini 3.8 Flash TTS is the default provider. Qwen3-TTS remains a local/research provider. Additional TTS engines can implement the same provider interface.
+
+A provider can satisfy the Digital Twin invariant in one of two ways:
+
+1. Native replicated-voice mode: the provider synthesizes with a consent-backed target-voice binding. Gemini Voice Replication and Qwen reference cloning use this path.
+2. Post-conversion mode: an arbitrary TTS provider produces carrier speech and a configured neural TwinConversionBackend converts that waveform into the enrolled VoiceDNA identity.
+
+If neither condition is true, synthesis fails closed. Non-twin provider audio is never returned by the public API.
+
+## Gemini setup
+
+Install the project and set credentials:
+
+    pip install -e ".[dev]"
+    export GEMINI_API_KEY=...
+    export BVT_DEFAULT_TTS_PROVIDER=gemini
+
+Create the local VoiceDNA profile first, then create a consent-backed Gemini replicated voice and bind it:
+
+    python scripts/register_gemini_voice.py       --voice-id target_speaker       --source-audio reference_speaker.wav       --consent-audio speaker_consent.wav       --display-name "BRUTUS Digital Twin"
+
+Synthesize:
+
+    python scripts/synthesize.py       --voice target_speaker       --text "BRUTUS is online."
+
+## Provider-independent conversion
+
+For TTS providers without native target-voice replication, configure a trained conversion service:
+
+    export BVT_TWIN_CONVERTER_URL=http://127.0.0.1:8790/v1/convert
+
+The service contract receives source PCM, VoiceDNA and the HDVR plan and must return target Digital Twin PCM.
 
 ## Architecture
 
-The system separates stable identity from time-varying behaviour:
+VoiceDNA separates stable identity from dynamic behaviour:
 
-- IdentityCore and VocalProfile model stable speaker acoustics.
-- SpeakerMemory keeps multiple reference states instead of averaging one speaker vector.
-- AccentAtlas models phoneme/allophone-conditioned pronunciation.
-- ProsodyMemory and ProsodyTrajectory model F0, energy, duration, pauses and voicing through time.
-- EventSignature models breath and non-verbal events.
-- HDVR fuses those controls before the acoustic backend.
-- Qwen3-TTS is the first production baseline; F5/OpenVoice remain benchmark adapters.
-- Performance mode preserves reference timing/prosody; twin mode predicts speaker behaviour for unseen text.
-- The public streaming contract is 24 kHz mono PCM16 plus timing/prosody metadata for BRUTUS.
+- IdentityCore and VocalProfile
+- multi-reference SpeakerMemory
+- phoneme/context AccentAtlas
+- ProsodyMemory and time-varying trajectory
+- breath/non-verbal EventSignature
+- provider-specific replicated-voice bindings
+- HDVR style/conditioning plan
 
-## Development state
-
-This repository contains an executable research architecture and evaluation harness. Foundation-model weights and trained speaker adapters are not stored in Git. Training data must be consented and supplied separately.
-
-## Quick start
-
-    python -m venv .venv
-    .venv/bin/pip install -e ".[dev]"
-    pytest
-    uvicorn voice_twin.api.server:app --reload
-
-Windows PowerShell activation:
-
-    .venv\Scripts\Activate.ps1
-
-## Main commands
-
-    python scripts/prepare_dataset.py --help
-    python scripts/enroll_voice.py --help
-    python scripts/train.py --help
-    python scripts/synthesize.py --help
-    python scripts/evaluate.py --help
-
-See docs/ARCHITECTURE.md, docs/TRAINING.md and docs/EVALUATION.md.
+See docs/ARCHITECTURE.md, docs/TRAINING.md, docs/EVALUATION.md, and docs/BRUTUS_INTEGRATION.md.

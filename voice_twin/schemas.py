@@ -21,6 +21,7 @@ class AudioFormat(str, Enum):
 class SynthesisRequest(BaseModel):
     text: str = Field(min_length=1)
     voice_id: str
+    provider: str | None = None
     language: str = "English"
     emotion: str | None = None
     mode: SynthesisMode = SynthesisMode.TWIN

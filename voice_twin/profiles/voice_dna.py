@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
@@ -22,6 +22,8 @@ class VoiceDNA:
     prosody_memory: list[dict[str, Any]] = field(default_factory=list)
     event_signature: dict[str, Any] = field(default_factory=dict)
     pronunciation_dictionary: dict[str, str] = field(default_factory=dict)
+    style_profile: dict[str, Any] = field(default_factory=dict)
+    provider_bindings: dict[str, dict[str, Any]] = field(default_factory=dict)
     model_version: str = VOICE_DNA_VERSION
 
     def validate(self) -> None:
@@ -34,6 +36,15 @@ class VoiceDNA:
         if not np.isfinite(self.identity_core).all():
             raise ValueError("identity_core contains non-finite values")
 
+    def provider_binding(self, provider: str) -> dict[str, Any] | None:
+        binding = self.provider_bindings.get(provider)
+        return dict(binding) if binding else None
+
+    def bind_provider(self, provider: str, **binding: Any) -> None:
+        if not binding.get("kind"):
+            raise ValueError("provider binding must declare kind")
+        self.provider_bindings[provider] = dict(binding)
+
     def to_jsonable(self) -> dict[str, Any]:
         self.validate()
         return {
@@ -45,6 +56,8 @@ class VoiceDNA:
             "prosody_memory": self.prosody_memory,
             "event_signature": self.event_signature,
             "pronunciation_dictionary": self.pronunciation_dictionary,
+            "style_profile": self.style_profile,
+            "provider_bindings": self.provider_bindings,
             "model_version": self.model_version,
         }
 
@@ -59,5 +72,7 @@ class VoiceDNA:
             prosody_memory=data.get("prosody_memory", []),
             event_signature=data.get("event_signature", {}),
             pronunciation_dictionary=data.get("pronunciation_dictionary", {}),
+            style_profile=data.get("style_profile", {}),
+            provider_bindings=data.get("provider_bindings", {}),
             model_version=data.get("model_version", VOICE_DNA_VERSION),
         )

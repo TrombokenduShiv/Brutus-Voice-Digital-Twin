@@ -1,9 +1,18 @@
 # BRUTUS Integration
 
-BRUTUS should depend only on a TTS provider boundary.
+BRUTUS must integrate only with the Voice Digital Twin service, never directly with Gemini, Qwen, or another TTS provider.
 
-Input: text, voice_id, language, optional emotion/style and abort/cancellation state.
+Production path:
 
-Output: streamed 24 kHz mono PCM16 frames plus optional prosody metadata.
+    BRUTUS reasoning text
+      -> POST /v1/synthesize or WS /v1/tts/stream
+      -> VoiceTwinEngine
+      -> Gemini by default
+      -> DigitalTwinFinalizer
+      -> Device Renderer
+      -> 24 kHz mono PCM16
+      -> existing BRUTUS robot audio pacer
 
-Do not move HDVR/model internals into Electron. Run this project as a local/Brain-Node service and connect it to the existing BRUTUS robot PCM pacing path.
+The response includes digital_twin=true metadata. A request fails instead of returning raw provider voice when no target-voice replication or post-conversion path is available.
+
+The request supports provider override for experiments, but voice_id always refers to the local enrolled VoiceDNA profile. Provider-specific IDs are internal bindings stored inside that profile.

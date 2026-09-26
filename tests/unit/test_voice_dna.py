@@ -4,7 +4,13 @@ from voice_twin.profiles.voice_dna import VoiceDNA
 
 
 def test_voice_dna_roundtrip():
-    p=VoiceDNA("s",np.ones(4),np.ones(3),np.ones((2,4)))
-    q=VoiceDNA.from_jsonable(p.to_jsonable())
-    assert q.speaker_id=="s"
-    assert q.identity_memory.shape==(2,4)
+    p = VoiceDNA("s", np.ones(4), np.ones(3), np.ones((2, 4)))
+    p.bind_provider("gemini", kind="replicated", voice_id="voice_test")
+    p.style_profile = {"description": "warm, measured delivery"}
+
+    q = VoiceDNA.from_jsonable(p.to_jsonable())
+
+    assert q.speaker_id == "s"
+    assert q.identity_memory.shape == (2, 4)
+    assert q.provider_binding("gemini")["voice_id"] == "voice_test"
+    assert q.style_profile["description"] == "warm, measured delivery"
