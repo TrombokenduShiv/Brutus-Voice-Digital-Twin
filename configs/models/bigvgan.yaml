@@ -1,4 +1,12 @@
 vocoder:
   name: bigvgan
-  enabled: false
-  use_when: acoustic_backend_outputs_features
+  enabled: true
+  model_id: nvidia/bigvgan_v2_24khz_100band_256x
+  sample_rate: 24000
+  mel_bins: 100
+  hop_size: 256
+  n_fft: 1024
+  win_size: 1024
+  fmin: 0
+  fmax: 12000
+  use_cuda_kernel: false
