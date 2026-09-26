@@ -39,6 +39,9 @@ qwen = [
   "transformers>=4.48",
   "qwen-tts",
 ]
+vocoder = [
+  "bigvgan @ git+https://github.com/NVIDIA/BigVGAN.git",
+]
 testml = [
   "torch>=2.4",
 ]
