@@ -59,8 +59,8 @@ class VoiceTwinEngine:
             provider_voice_id=plan.provider_voice_id,
             provider_binding_kind=plan.provider_binding_kind,
             style=plan.style_instruction,
-            reference_audio=request.reference_audio or binding.get("reference_audio"),
-            reference_text=request.reference_text or binding.get("reference_text"),
+            reference_audio=binding.get("reference_audio"),
+            reference_text=binding.get("reference_text"),
             metadata={
                 "voice_clone_prompt": binding.get("voice_clone_prompt"),
                 "x_vector_only_mode": binding.get("x_vector_only_mode", False),
