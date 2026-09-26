@@ -1,6 +1,11 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, WebSocket
+import asyncio
+
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
+from voice_twin.api.runtime import get_engine
+from voice_twin.schemas import SynthesisRequest
 
 router = APIRouter(tags=["streaming"])
 
@@ -8,11 +13,25 @@ router = APIRouter(tags=["streaming"])
 @router.websocket("/tts/stream")
 async def tts_stream(ws: WebSocket):
     await ws.accept()
-    await ws.send_json({
-        "type": "ready",
-        "format": "pcm_s16le",
-        "sample_rate": 24000,
-        "channels": 1,
-        "message": "Runtime backend must be injected by deployment entrypoint.",
-    })
-    await ws.close()
+    try:
+        payload = await ws.receive_json()
+        request = SynthesisRequest.model_validate(payload)
+        generated = await asyncio.to_thread(get_engine().synthesize, request)
+        await ws.send_json({
+            "type": "ready",
+            "format": "pcm_s16le",
+            "sample_rate": generated.sample_rate,
+            "channels": 1,
+            "provider": generated.provider,
+            "digital_twin": generated.digital_twin,
+            "voice_id": request.voice_id,
+        })
+        for frame in get_engine().stream(request):
+            await ws.send_bytes(frame.pcm)
+        await ws.send_json({"type": "complete", "digital_twin": True})
+    except WebSocketDisconnect:
+        return
+    except Exception as exc:
+        await ws.send_json({"type": "error", "message": str(exc)})
+    finally:
+        await ws.close()
