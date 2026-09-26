@@ -1,0 +1,18 @@
+training:
+  stage: twin_converter
+  precision: bf16
+  learning_rate: 0.0002
+  weight_decay: 0.01
+  warmup_steps: 3000
+  batch_size: 8
+  num_workers: 2
+  accumulation_steps: 2
+  clip_norm: 1.0
+  max_steps: 100000
+  validate_every_steps: 500
+  checkpoint_every_steps: 1000
+  patience_evaluations: 12
+  losses:
+    conversion_mel: 1.0
+    conversion_delta: 0.5
+    conversion_identity: 0.3
