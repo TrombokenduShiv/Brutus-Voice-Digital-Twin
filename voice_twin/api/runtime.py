@@ -7,6 +7,7 @@ from voice_twin.acoustic.gemini_backend import GeminiTtsBackend
 from voice_twin.acoustic.qwen_backend import QwenVoiceCloneBackend
 from voice_twin.acoustic.registry import ProviderRegistry
 from voice_twin.conversion.http_converter import HttpTwinConversionBackend
+from voice_twin.conversion.local_neural_converter import LocalNeuralTwinConverter
 from voice_twin.conversion.twin_converter import DigitalTwinFinalizer
 from voice_twin.inference.engine import VoiceTwinEngine
 from voice_twin.profiles.store import VoiceProfileStore
@@ -27,8 +28,24 @@ def get_engine() -> VoiceTwinEngine:
         )
     )
 
+    local_checkpoint = os.getenv("BVT_TWIN_CONVERTER_CHECKPOINT")
     converter_url = os.getenv("BVT_TWIN_CONVERTER_URL")
-    converter = HttpTwinConversionBackend(converter_url) if converter_url else None
+    if local_checkpoint:
+        converter = LocalNeuralTwinConverter(
+            local_checkpoint,
+            device=os.getenv("BVT_CONVERTER_DEVICE", "cuda"),
+            vocoder_model=os.getenv(
+                "BVT_BIGVGAN_MODEL",
+                "nvidia/bigvgan_v2_24khz_100band_256x",
+            ),
+            use_cuda_kernel=os.getenv(
+                "BVT_BIGVGAN_CUDA_KERNEL", "false"
+            ).lower() == "true",
+        )
+    elif converter_url:
+        converter = HttpTwinConversionBackend(converter_url)
+    else:
+        converter = None
 
     key = os.getenv("BVT_PROFILE_KEY")
     store = VoiceProfileStore(
