@@ -1,0 +1,7 @@
+audio:
+  sample_rate: 24000
+  channels: 1
+  analysis_frame_ms: 10
+  peak_target: 0.95
+  silence_dbfs: -45.0
+  min_speech_ms: 120

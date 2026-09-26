@@ -6,12 +6,10 @@ audio:
   master_sample_rate: 24000
   channels: 1
   pcm_format: s16le
-
   analysis:
     frame_ms: 10
     f0_min_hz: 50
     f0_max_hz: 600
-
   robot:
     sample_rate: 24000
     channels: 1
