@@ -1,0 +1,34 @@
+project:
+  name: brutus-voice-twin
+  seed: 42
+
+audio:
+  master_sample_rate: 24000
+  channels: 1
+  pcm_format: s16le
+
+  analysis:
+    frame_ms: 10
+    f0_min_hz: 50
+    f0_max_hz: 600
+
+  robot:
+    sample_rate: 24000
+    channels: 1
+    sample_width_bits: 16
+
+voice_profile:
+  minimum_enrollment_seconds: 60
+  recommended_enrollment_seconds: 900
+  digital_twin_target_seconds: 1800
+
+privacy:
+  encrypt_voice_profiles: true
+  retain_raw_audio: false
+  require_consent: true
+
+streaming:
+  output_chunk_ms: 60
+  lookahead_ms: 180
+  target_buffer_ms: 180
+  max_buffer_ms: 400

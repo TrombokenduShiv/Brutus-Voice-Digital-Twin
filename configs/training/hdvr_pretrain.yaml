@@ -1,0 +1,48 @@
+training:
+
+  precision: bf16
+
+  optimizer:
+    name: adamw
+    learning_rate: 0.0002
+    betas: [0.9, 0.98]
+    weight_decay: 0.01
+
+  scheduler:
+    name: cosine
+    warmup_steps: 5000
+
+  gradient:
+    accumulation_steps: 4
+    clip_norm: 1.0
+
+  batch:
+    max_audio_seconds_per_gpu: 120
+    min_segment_seconds: 2.0
+    max_segment_seconds: 12.0
+
+  epochs: 50
+  max_steps: 250000
+
+  checkpoint_every_steps: 2500
+  validate_every_steps: 1000
+
+  early_stopping:
+    metric: validation_total_loss
+    patience_evaluations: 15
+
+  augmentation:
+    probability: 0.35
+
+    channel:
+      enabled: true
+
+    noise:
+      enabled: true
+      snr_db: [15, 35]
+
+    speed:
+      enabled: false
+
+    pitch:
+      enabled: false

@@ -1,0 +1,33 @@
+adaptation:
+
+  base_model:
+    freeze: true
+
+  hdvr:
+    freeze_backbone: true
+
+  lora:
+    enabled: true
+    rank: 16
+    alpha: 32
+    dropout: 0.05
+
+  optimizer:
+    name: adamw
+    learning_rate: 0.00005
+    weight_decay: 0.01
+
+  precision: bf16
+
+  max_steps: 8000
+
+  gradient:
+    accumulation_steps: 4
+    clip_norm: 1.0
+
+  validation_every_steps: 250
+  checkpoint_every_steps: 500
+
+  early_stopping:
+    metric: identity_prosody_composite
+    patience_evaluations: 8
