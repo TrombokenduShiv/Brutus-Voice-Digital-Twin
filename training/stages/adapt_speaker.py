@@ -1,1 +1,7 @@
-"""Scaffolded module for training/stages/adapt_speaker.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+from training.stages.common import run_stage
+
+
+def train(**kwargs):
+    return run_stage("speaker-adapt", **kwargs)
