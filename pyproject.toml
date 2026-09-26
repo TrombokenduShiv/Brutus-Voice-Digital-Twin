@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "brutus-voice-twin"
-version = "0.3.0"
+version = "0.3.1"
 description = "Provider-agnostic HDVR voice digital twin service for BRUTUS"
 requires-python = ">=3.11,<3.13"
 dependencies = [
@@ -27,6 +27,7 @@ ml = [
   "torch>=2.4",
   "torchaudio>=2.4",
   "transformers>=4.48",
+  "huggingface-hub>=0.28",
   "speechbrain>=1.0",
   "scikit-learn>=1.5",
   "phonemizer>=3.3",
@@ -37,6 +38,7 @@ qwen = [
   "torch>=2.4",
   "torchaudio>=2.4",
   "transformers>=4.48",
+  "huggingface-hub>=0.28",
   "qwen-tts",
 ]
 vocoder = [

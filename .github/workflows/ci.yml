@@ -17,3 +17,4 @@ jobs:
       - run: pip install -e ".[dev,testml]"
       - run: python -m compileall -q voice_twin training evaluation tests scripts
       - run: pytest
+      - run: python scripts/smoke_train.py --work-dir /tmp/bvt-smoke
