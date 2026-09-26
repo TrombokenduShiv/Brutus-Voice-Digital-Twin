@@ -36,6 +36,10 @@ class DigitalTwinFinalizer:
         plan: DigitalTwinPlan,
     ) -> GeneratedAudio:
         if generated.native_digital_twin:
+            if plan.provider_binding_kind != "replicated":
+                raise DigitalTwinInvariantError(
+                    "native target-voice audio is not backed by a replicated VoiceDNA binding"
+                )
             final = replace(generated, digital_twin=True)
         elif self.converter is not None:
             final = self.converter.convert(generated, profile, plan)
