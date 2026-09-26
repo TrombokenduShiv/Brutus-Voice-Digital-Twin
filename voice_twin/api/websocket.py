@@ -6,6 +6,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from voice_twin.api.runtime import get_engine
 from voice_twin.schemas import SynthesisRequest
+from voice_twin.streaming.pcm_stream import audio_frames
 
 router = APIRouter(tags=["streaming"])
 
@@ -26,7 +27,7 @@ async def tts_stream(ws: WebSocket):
             "digital_twin": generated.digital_twin,
             "voice_id": request.voice_id,
         })
-        for frame in get_engine().stream(request):
+        for frame in audio_frames(generated.waveform, generated.sample_rate):
             await ws.send_bytes(frame.pcm)
         await ws.send_json({"type": "complete", "digital_twin": True})
     except WebSocketDisconnect:
