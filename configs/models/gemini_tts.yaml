@@ -1,0 +1,9 @@
+backend:
+  name: gemini
+  model_id: gemini-3.8-flash-tts
+  default: true
+  output_sample_rate: 24000
+  output_format: audio/l16
+  require_replicated_voice_binding: true
+  style_control: true
+  streaming_capable: true
