@@ -14,7 +14,7 @@ from voice_twin.acoustic.base import (
 
 
 def _decode_l16(data: str | bytes) -> np.ndarray:
-    raw = base64.b64decode(data) if isinstance(data, str) else bytes(data)
+    raw = base64.b64decode(data)
     return (np.frombuffer(raw, dtype="<i2").astype(np.float32) / 32768.0).copy()
 
 
