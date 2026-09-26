@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import replace
 
+import numpy as np
+
 from voice_twin.acoustic.base import GeneratedAudio, ProviderSynthesisRequest
 from voice_twin.acoustic.registry import ProviderRegistry
 from voice_twin.conversion.twin_converter import DigitalTwinFinalizer
@@ -29,6 +31,21 @@ class VoiceTwinEngine:
         self.finalizer = finalizer or DigitalTwinFinalizer()
         self.renderer = renderer or RobotRenderer()
 
+    def _finalize(
+        self,
+        request: SynthesisRequest,
+        source: GeneratedAudio,
+        provider_name: str,
+    ) -> GeneratedAudio:
+        profile = self.profiles.load(request.voice_id)
+        plan = build_digital_twin_plan(profile, request, provider_name)
+        twin = self.finalizer.finalize(source, profile, plan)
+        rendered = self.renderer.render(twin.waveform, twin.sample_rate)
+        final = replace(twin, waveform=rendered, sample_rate=self.renderer.target_sr)
+        if not final.digital_twin:
+            raise RuntimeError("digital-twin postcondition violated")
+        return final
+
     def synthesize(self, request: SynthesisRequest) -> GeneratedAudio:
         profile = self.profiles.load(request.voice_id)
         provider_name = request.provider or self.default_provider
@@ -51,13 +68,23 @@ class VoiceTwinEngine:
             },
         )
         source = provider.synthesize(provider_request)
-        twin = self.finalizer.finalize(source, profile, plan)
+        return self._finalize(request, source, provider_name)
 
-        rendered = self.renderer.render(twin.waveform, twin.sample_rate)
-        final = replace(twin, waveform=rendered, sample_rate=self.renderer.target_sr)
-        if not final.digital_twin:
-            raise RuntimeError("digital-twin postcondition violated")
-        return final
+    def finalize_external(
+        self,
+        request: SynthesisRequest,
+        waveform: np.ndarray,
+        sample_rate: int,
+        source_provider: str,
+    ) -> GeneratedAudio:
+        source = GeneratedAudio(
+            waveform=np.asarray(waveform, dtype=np.float32),
+            sample_rate=sample_rate,
+            provider=source_provider,
+            native_digital_twin=False,
+            metadata={"external_carrier": True},
+        )
+        return self._finalize(request, source, source_provider)
 
     def stream(self, request: SynthesisRequest):
         generated = self.synthesize(request)
