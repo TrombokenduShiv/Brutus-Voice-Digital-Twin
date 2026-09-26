@@ -1,0 +1,10 @@
+training:
+  stage: accent
+  optimizer: {name: adamw, learning_rate: 0.0001, weight_decay: 0.01}
+  max_steps: 20000
+  batch_size: 32
+  gradient_clip_norm: 1.0
+  losses:
+    allophone: 1.0
+    duration: 0.3
+    acoustic_feature: 0.3

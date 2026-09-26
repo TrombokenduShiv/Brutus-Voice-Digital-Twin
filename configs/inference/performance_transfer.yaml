@@ -1,0 +1,9 @@
+inference:
+  mode: performance
+  preserve:
+    f0: true
+    energy: true
+    pauses: true
+    breaths: true
+    timing: true
+  output_sample_rate: 24000

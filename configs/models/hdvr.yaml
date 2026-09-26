@@ -1,46 +1,25 @@
 hdvr:
-
   identity:
     ecapa_dim: 192
     projected_dim: 256
-
   vocal_profile:
     dim: 128
-
   speaker_memory:
     slots: 64
     slot_dim: 256
     attention_heads: 8
     dropout: 0.10
-
   accent_atlas:
     phoneme_dim: 128
     context_dim: 128
     output_dim: 192
-
   prosody:
     frame_rate_hz: 100
     latent_dim: 256
-
-    features:
-      - log_f0
-      - energy
-      - duration
-      - voicing
-      - breath_probability
-
+    features: [log_f0, energy, duration, voicing, breath_probability]
   events:
     latent_dim: 64
-
-    classes:
-      - silence
-      - inhale
-      - exhale
-      - hesitation
-      - sigh
-      - laugh
-      - throat_clear
-
+    classes: [silence, inhale, exhale, hesitation, sigh, laugh, throat_clear]
   fusion:
     hidden_dim: 512
     layers: 4

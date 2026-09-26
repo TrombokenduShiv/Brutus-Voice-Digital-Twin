@@ -1,0 +1,4 @@
+encoder:
+  source: microsoft/wavlm-base-plus-sv
+  normalize: true
+  pooling: mean

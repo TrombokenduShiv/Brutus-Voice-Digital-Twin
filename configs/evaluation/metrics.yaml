@@ -1,0 +1,10 @@
+metrics:
+  identity: [ecapa_cosine, ssl_cosine, identity_retention, asv_eer]
+  content: [wer, cer]
+  prosody: [f0_correlation, log_f0_rmse, duration_mae_ms]
+  pauses: [precision, recall, f1, start_mae_ms, duration_mae_ms]
+  breaths: [precision, recall, f1, duration_mae_ms]
+  accent: [phoneme_duration_distance, allophone_accuracy]
+  runtime: [ttfa_ms, realtime_factor, underruns_per_minute]
+  robot: [over_air_identity_retention]
+  human: [speaker_abx_accuracy, real_fake_accuracy]

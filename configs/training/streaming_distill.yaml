@@ -1,0 +1,10 @@
+training:
+  stage: streaming_distill
+  teacher_context_ms: 2000
+  student_lookahead_ms: 180
+  chunk_ms: 60
+  max_steps: 40000
+  losses:
+    acoustic_distillation: 1.0
+    speaker_consistency: 0.3
+    prosody_continuity: 0.5

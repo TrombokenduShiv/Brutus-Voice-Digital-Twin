@@ -1,0 +1,26 @@
+success_gates:
+  identity:
+    ecapa_identity_retention: {minimum: 0.90}
+    ssl_identity_retention: {minimum: 0.90}
+  intelligibility:
+    wer_clean: {maximum: 0.05}
+    cer_clean: {maximum: 0.03}
+  performance_replication:
+    f0_correlation: {minimum: 0.92}
+    pause_start_mae_ms: {maximum: 50}
+    pause_duration_mae_ms: {maximum: 70}
+    phoneme_duration_mae_ms: {maximum: 40}
+    breath_event_f1: {minimum: 0.85}
+  generative_clone:
+    f0_distribution_retention: {minimum: 0.90}
+    pause_distribution_retention: {minimum: 0.85}
+    breath_event_f1: {minimum: 0.70}
+  streaming:
+    warm_ttfa_ms: {maximum: 300}
+    realtime_factor: {maximum: 0.50}
+    underruns_per_minute: {maximum: 0}
+  robot:
+    over_air_identity_retention: {minimum: 0.85}
+  human:
+    speaker_abx_accuracy: {minimum: 0.95}
+    real_fake_equivalence_margin: {maximum: 0.05}

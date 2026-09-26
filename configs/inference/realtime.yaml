@@ -1,0 +1,9 @@
+inference:
+  mode: twin
+  output_sample_rate: 24000
+  chunk_ms: 60
+  lookahead_ms: 180
+  target_buffer_ms: 180
+  max_buffer_ms: 400
+  max_ttfa_ms: 300
+  max_realtime_factor: 0.50

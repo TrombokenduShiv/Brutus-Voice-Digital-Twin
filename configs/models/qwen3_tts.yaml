@@ -1,0 +1,9 @@
+backend:
+  name: qwen3_tts
+  model_id: Qwen/Qwen3-TTS-12Hz-0.6B-Base
+  device: auto
+  dtype: bfloat16
+  attn_implementation: flash_attention_2
+  language: English
+  x_vector_only_mode: false
+  output_sample_rate: 24000

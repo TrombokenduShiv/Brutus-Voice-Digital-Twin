@@ -1,0 +1,4 @@
+encoder:
+  source: speechbrain/spkrec-ecapa-voxceleb
+  embedding_dim: 192
+  normalize: true

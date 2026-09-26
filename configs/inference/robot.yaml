@@ -1,0 +1,7 @@
+robot:
+  sample_rate: 24000
+  channels: 1
+  format: pcm_s16le
+  chunk_ms: 60
+  apply_device_inverse_filter: true
+  limiter_peak: 0.95

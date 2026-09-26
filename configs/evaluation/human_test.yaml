@@ -1,0 +1,11 @@
+human_test:
+  blinded: true
+  randomized: true
+  minimum_listeners: 20
+  real_fake:
+    real_fraction: 0.5
+    chance_accuracy: 0.5
+    equivalence_margin: 0.05
+    confidence: 0.95
+  abx:
+    trials_per_listener: 20

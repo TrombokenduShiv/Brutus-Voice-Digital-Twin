@@ -1,0 +1,7 @@
+training:
+  stage: events
+  optimizer: {name: adamw, learning_rate: 0.0001, weight_decay: 0.01}
+  max_steps: 15000
+  batch_size: 64
+  classes: [silence, inhale, exhale, hesitation, sigh, laugh, throat_clear]
+  focal_gamma: 2.0
