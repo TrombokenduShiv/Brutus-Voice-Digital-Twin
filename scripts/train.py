@@ -3,8 +3,15 @@ from __future__ import annotations
 import argparse
 import json
 
-from training.stages import adapt_speaker, train_accent, train_events, train_hdvr, train_prosody
-from training.stages import train_streaming
+from training.stages import (
+    adapt_speaker,
+    train_accent,
+    train_conversion,
+    train_events,
+    train_hdvr,
+    train_prosody,
+    train_streaming,
+)
 
 
 STAGES = {
@@ -14,6 +21,7 @@ STAGES = {
     "prosody": train_prosody.train,
     "events": train_events.train,
     "streaming-distill": train_streaming.train,
+    "twin-converter": train_conversion.train,
 }
 
 
