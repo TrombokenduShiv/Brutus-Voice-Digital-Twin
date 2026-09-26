@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "brutus-voice-twin"
-version = "0.2.0"
+version = "0.3.0"
 description = "Provider-agnostic HDVR voice digital twin service for BRUTUS"
 requires-python = ">=3.11,<3.13"
 dependencies = [
@@ -19,6 +19,7 @@ dependencies = [
   "jiwer>=3.0",
   "cryptography>=43",
   "google-genai>=2.25.0",
+  "tqdm>=4.66",
 ]
 
 [project.optional-dependencies]
@@ -28,12 +29,21 @@ ml = [
   "transformers>=4.48",
   "speechbrain>=1.0",
   "scikit-learn>=1.5",
+  "phonemizer>=3.3",
+  "tensorboard>=2.18",
+  "safetensors>=0.4",
 ]
 qwen = [
   "torch>=2.4",
   "torchaudio>=2.4",
   "transformers>=4.48",
   "qwen-tts",
+]
+vocoder = [
+  "bigvgan @ git+https://github.com/NVIDIA/BigVGAN.git",
+]
+testml = [
+  "torch>=2.4",
 ]
 dev = [
   "pytest>=8.3",

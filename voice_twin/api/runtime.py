@@ -23,12 +23,36 @@ def get_engine() -> VoiceTwinEngine:
     )
     registry.register(
         QwenVoiceCloneBackend(
-            model_id=os.getenv("BVT_QWEN_TTS_MODEL", "Qwen/Qwen3-TTS-12Hz-0.6B-Base")
+            model_id=os.getenv(
+                "BVT_QWEN_TTS_MODEL",
+                "Qwen/Qwen3-TTS-12Hz-0.6B-Base",
+            )
         )
     )
 
+    local_checkpoint = os.getenv("BVT_TWIN_CONVERTER_CHECKPOINT")
     converter_url = os.getenv("BVT_TWIN_CONVERTER_URL")
-    converter = HttpTwinConversionBackend(converter_url) if converter_url else None
+    if local_checkpoint:
+        from voice_twin.conversion.local_neural_converter import (
+            LocalNeuralTwinConverter,
+        )
+
+        converter = LocalNeuralTwinConverter(
+            local_checkpoint,
+            device=os.getenv("BVT_CONVERTER_DEVICE", "cuda"),
+            vocoder_model=os.getenv(
+                "BVT_BIGVGAN_MODEL",
+                "nvidia/bigvgan_v2_24khz_100band_256x",
+            ),
+            use_cuda_kernel=os.getenv(
+                "BVT_BIGVGAN_CUDA_KERNEL", "false"
+            ).lower()
+            == "true",
+        )
+    elif converter_url:
+        converter = HttpTwinConversionBackend(converter_url)
+    else:
+        converter = None
 
     key = os.getenv("BVT_PROFILE_KEY")
     store = VoiceProfileStore(
