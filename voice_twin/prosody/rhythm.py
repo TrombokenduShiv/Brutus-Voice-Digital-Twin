@@ -1,1 +1,11 @@
-"""Scaffolded module for voice_twin/prosody/rhythm.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+
+@dataclass(slots=True)
+class RhythmProfile:
+    syllables_per_second: float
+    pause_fraction: float
+    mean_pause_ms: float
+    phrase_rate: float

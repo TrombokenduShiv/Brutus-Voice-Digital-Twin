@@ -1,1 +1,7 @@
-"""Scaffolded module for voice_twin/inference/performance.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+from voice_twin.conversion.performance_transfer import PerformanceTransfer, PerformanceTransferRequest
+
+
+def replicate_performance(transfer: PerformanceTransfer, request: PerformanceTransferRequest):
+    return transfer.synthesize(request)

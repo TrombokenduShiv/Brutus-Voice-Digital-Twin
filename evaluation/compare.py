@@ -1,1 +1,5 @@
-"""Scaffolded module for evaluation/compare.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+
+def compare_metrics(baseline: dict[str,float], candidate: dict[str,float]) -> dict[str,float]:
+    return {k: candidate[k]-baseline[k] for k in candidate.keys() & baseline.keys()}

@@ -1,1 +1,8 @@
-# Configuration reserved for configs/inference/quality.yaml
+inference:
+  mode: twin
+  output_sample_rate: 24000
+  streaming: false
+  multi_reference_top_k: 8
+  prosody_memory_top_k: 8
+  prosody_strength: 1.0
+  accent_strength: 1.0

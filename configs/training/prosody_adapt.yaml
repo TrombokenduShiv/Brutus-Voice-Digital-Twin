@@ -1,1 +1,12 @@
-# Configuration reserved for configs/training/prosody_adapt.yaml
+training:
+  stage: prosody
+  optimizer: {name: adamw, learning_rate: 0.0001, weight_decay: 0.01}
+  max_steps: 30000
+  batch_size: 32
+  frame_rate_hz: 100
+  losses:
+    log_f0: 1.0
+    energy: 0.5
+    duration: 0.5
+    pause: 0.8
+    breath_probability: 0.5

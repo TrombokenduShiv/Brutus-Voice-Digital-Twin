@@ -1,1 +1,5 @@
-# Configuration reserved for configs/models/f5_tts.yaml
+backend:
+  name: f5_tts
+  enabled: false
+  purpose: research_baseline
+  isolated_environment: true

@@ -1,1 +1,7 @@
-"""Scaffolded module for training/losses/ssl_perceptual.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+import torch
+
+
+def ssl_perceptual_loss(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+    return torch.nn.functional.mse_loss(pred, target)

@@ -1,1 +1,7 @@
-"""Scaffolded module for training/losses/accent.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+import torch
+
+
+def accent_feature_loss(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+    return torch.nn.functional.smooth_l1_loss(pred, target)

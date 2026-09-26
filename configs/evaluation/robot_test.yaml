@@ -1,1 +1,9 @@
-# Configuration reserved for configs/evaluation/robot_test.yaml
+robot_test:
+  sample_rate: 24000
+  measurement_distance_m: 1.0
+  require_device_profile: true
+  compare:
+    - identity_retention
+    - f0_correlation
+    - spectral_distance
+    - pause_duration_mae_ms

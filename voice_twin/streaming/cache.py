@@ -1,1 +1,5 @@
-"""Scaffolded module for voice_twin/streaming/cache.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+
+class SessionCache(dict):
+    """Per-request cache for foundation-model prompts/KV state/prosody lookahead."""

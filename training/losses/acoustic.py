@@ -1,1 +1,7 @@
-"""Scaffolded module for training/losses/acoustic.py; concrete implementation is introduced incrementally behind stable interfaces."""
+from __future__ import annotations
+
+import torch
+
+
+def acoustic_l1(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+    return torch.nn.functional.l1_loss(pred, target)

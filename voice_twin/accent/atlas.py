@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from typing import Any
 
 
@@ -34,4 +34,4 @@ class AccentAtlas:
         return self.cells.get(self.key(phoneme, context))
 
     def to_dict(self) -> dict[str, Any]:
-        return {k: vars(v) for k, v in self.cells.items()}
+        return {k: asdict(v) for k, v in self.cells.items()}
